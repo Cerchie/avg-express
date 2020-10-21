@@ -9,33 +9,18 @@ app.use(express.urlencoded({
 }));
 
 function convertAndValidateNumsArray(numsAsStrings) {
-    let result = [];
-
-    for (let i = 0; i < numsAsStrings.length; i++) {
-        let valToNumber = Number(numsAsStrings[i]);
-
-        if (Number.isNaN(valToNumber)) {
-            return new Error(
-                `The value '${numsAsStrings[i]}' at index ${i} is not a valid number.`
-            );
-        }
-        result.push(valToNumber);
-
-    }
-    console.log(result)
-    let strArr = result.split(',');
+    let strArr = numsAsStrings.split(',');
     let intArr = [];
     for (i = 0; i < strArr.length; i++)
         intArr.push(parseInt(strArr[i]));
-    console.log(strArr)
-    return strArr;
-
+    console.log(intArr);
+    return intArr;
 }
 
 function mean(arr) {
     const sum = arr.reduce((acc, cur) => acc + cur);
     const average = (sum / arr.length);
-    return average
+    return average;
 }
 //method from stackoverflow
 app.get('/mean', function (req, res, next) {
@@ -47,13 +32,14 @@ app.get('/mean', function (req, res, next) {
 
     let averager = mean(arr);
 
-    return (`response: operation: "mean", value: ${averager}`)
+    res.send(`response: operation: "mean", value: ${averager}`)
 });
 
 function median(arr) {
     const mid = Math.floor(arr.length / 2),
         nums = [...arr.sort((a, b) => a - b)];
     const median = arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+    return median;
 }
 // from https://www.w3resource.com/javascript-exercises/fundamental/javascript-fundamental-exercise-88.php
 app.get('/median', function (req, res, next) {
@@ -62,7 +48,7 @@ app.get('/median', function (req, res, next) {
     }
     let arr = convertAndValidateNumsArray(req.query.nums)
     let medianr = median(arr)
-    return (`response: operation: "median", value:${medianr}`);
+    res.send(`response: operation: "median", value:${medianr}`);
 
 });
 
@@ -85,7 +71,7 @@ app.get('/mode', function (req, res, next) {
     }
     let a = convertAndValidateNumsArray(req.query.nums)
     let moder = mode(a);
-    return (`response: operation: "median", value:${moder}`)
+    res.send(`response: operation: "mode", value:${moder}`)
 });
 
 app.use(function (req, res, next) {
