@@ -1,5 +1,5 @@
 const express = require('express');
-const expressError = require("./error")
+const ExpressError = require("./error")
 const app = express();
 
 //Tell Express to parse request bodies for either form data or JSON:
@@ -25,17 +25,25 @@ function convertAndValidateNumsArray(numsAsStrings) {
     return result;
 }
 //method from stackoverflow
-app.get('/mean/:fnums', function (req, res, next) {
-    let arr = convertAndValidateNumsArray(req.params.fnums)
+app.get('/mean', function mean(req, res, next) {
+    if (!req.query.nums) {
+        throw new ExpressError('You must pass a query key of nums with a comma-separated list of numbers.', 400)
+    }
+    let arr = convertAndValidateNumsArray(req.query.nums)
     console.log('consoleconsoleconsole')
+    console.log(arr)
     const sum = arr.reduce((acc, cur) => acc + cur);
+
     const average = (sum / arr.length);
     console.log(average)
     return (`response: operation: "mean", value: ${average}`)
 });
 // from https://www.w3resource.com/javascript-exercises/fundamental/javascript-fundamental-exercise-88.php
-app.get('/median/:fnums', function (req, res, next) {
-    let arr = convertAndValidateNumsArray(req.params.fnums)
+app.get('/median', function median(req, res, next) {
+    if (!req.query.nums) {
+        throw new ExpressError('You must pass a query key of nums with a comma-separated list of numbers.', 400)
+    }
+    let arr = convertAndValidateNumsArray(req.query.nums)
     const mid = Math.floor(arr.length / 2),
         nums = [...arr.sort((a, b) => a - b)];
     const median = arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
@@ -43,8 +51,11 @@ app.get('/median/:fnums', function (req, res, next) {
 
 });
 //from https://stackoverflow.com/questions/52898456/simplest-way-of-finding-mode-in-javascript
-app.get('/mode/:fnums', function (req, res, next) {
-    let a = convertAndValidateNumsArray(req.params.fnums)
+app.get('/mode', function mode(req, res, next) {
+    if (!req.query.nums) {
+        throw new ExpressError('You must pass a query key of nums with a comma-separated list of numbers.', 400)
+    }
+    let a = convertAndValidateNumsArray(req.query.nums)
     let mode = Object.values(
         a.reduce((count, e) => {
             if (!(e in count)) {
