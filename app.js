@@ -20,12 +20,15 @@ function convertAndValidateNumsArray(numsAsStrings) {
             );
         }
         result.push(valToNumber);
-        let strArr = result.split(',');
-        let intArr = [];
-        for (i = 0; i < strArr.length; i++)
-            intArr.push(parseInt(strArr[i]));
+
     }
-    return result;
+    console.log(result)
+    let strArr = result.split(',');
+    let intArr = [];
+    for (i = 0; i < strArr.length; i++)
+        intArr.push(parseInt(strArr[i]));
+    console.log(strArr)
+    return strArr;
 
 }
 
@@ -35,13 +38,13 @@ function mean(arr) {
     return average
 }
 //method from stackoverflow
-app.get('/mean', function mean(req, res, next) {
+app.get('/mean', function (req, res, next) {
     if (!req.query.nums) {
         throw new ExpressError('You must pass a query key of nums with a comma-separated list of numbers.', 400)
     }
-    console.log(req.query.nums)
+
     let arr = convertAndValidateNumsArray(req.query.nums);
-    console.log(arr)
+
     let averager = mean(arr);
 
     return (`response: operation: "mean", value: ${averager}`)
@@ -53,7 +56,7 @@ function median(arr) {
     const median = arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
 }
 // from https://www.w3resource.com/javascript-exercises/fundamental/javascript-fundamental-exercise-88.php
-app.get('/median', function median(req, res, next) {
+app.get('/median', function (req, res, next) {
     if (!req.query.nums) {
         throw new ExpressError('You must pass a query key of nums with a comma-separated list of numbers.', 400)
     }
@@ -76,7 +79,7 @@ function mode(a) {
     return mode;
 }
 //from https://stackoverflow.com/questions/52898456/simplest-way-of-finding-mode-in-javascript
-app.get('/mode', function mode(req, res, next) {
+app.get('/mode', function (req, res, next) {
     if (!req.query.nums) {
         throw new ExpressError('You must pass a query key of nums with a comma-separated list of numbers.', 400)
     }
