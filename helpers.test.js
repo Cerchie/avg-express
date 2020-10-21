@@ -4,7 +4,7 @@ const {
     mean,
     median,
     mode,
-} = require("./app");
+} = require("./app").helpers;
 
 
 describe("#median", function () {
@@ -17,9 +17,6 @@ describe("#median", function () {
 });
 
 describe("#mean", function () {
-    it("finds the mean of an empty array", function () {
-        expect(mean([])).toEqual(0)
-    })
     it("finds the mean of an array of numbers", function () {
         expect(mean([1, -1, 4, 2])).toEqual(1.5)
     });
